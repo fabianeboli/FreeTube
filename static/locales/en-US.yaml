@@ -141,6 +141,7 @@ Settings:
       Black: Black
       Dark: Dark
       Light: Light
+      Moonlight: Moonlight
     Main Color Theme:
       Main Color Theme: Main Color Theme
       Red: Red
@@ -148,6 +149,7 @@ Settings:
       Purple: Purple
       Deep Purple: Deep Purple
       Indigo: Indigo
+      Moonlight: Moonlight
       Blue: Blue
       Light Blue: Light Blue
       Cyan: Cyan

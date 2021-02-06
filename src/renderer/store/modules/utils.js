@@ -33,7 +33,8 @@ const state = {
     'mainYellow',
     'mainAmber',
     'mainOrange',
-    'mainDeepOrange'
+    'mainDeepOrange',
+    'mainMoonlight'
   ],
   colorValues: [
     '#d50000',
@@ -51,7 +52,8 @@ const state = {
     '#FFD600',
     '#FFAB00',
     '#FF6D00',
-    '#DD2C00'
+    '#DD2C00',
+    '#222436'
   ]
 }
 

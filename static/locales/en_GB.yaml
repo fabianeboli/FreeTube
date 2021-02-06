@@ -129,6 +129,7 @@ Settings:
       Black: 'Black'
       Dark: 'Dark'
       Light: 'Light'
+      Moonlight: 'Moonlight'
     Main Color Theme:
       Main Color Theme: 'Main Colour Theme'
       Red: 'Red'
@@ -141,6 +142,7 @@ Settings:
       Cyan: 'Cyan'
       Teal: 'Teal'
       Green: 'Green'
+      Moonlight: 'Moonlight'
       Light Green: 'Light Green'
       Lime: 'Lime'
       Yellow: 'Yellow'

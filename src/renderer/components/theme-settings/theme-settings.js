@@ -35,7 +35,8 @@ export default Vue.extend({
       baseThemeValues: [
         'light',
         'dark',
-        'black'
+        'black',
+        'moonlight'
       ],
       colorValues: [
         'Red',
@@ -53,7 +54,8 @@ export default Vue.extend({
         'Yellow',
         'Amber',
         'Orange',
-        'DeepOrange'
+        'DeepOrange',
+        'Moonlight'
       ]
     }
   },
@@ -89,7 +91,8 @@ export default Vue.extend({
       return [
         this.$t('Settings.Theme Settings.Base Theme.Light'),
         this.$t('Settings.Theme Settings.Base Theme.Dark'),
-        this.$t('Settings.Theme Settings.Base Theme.Black')
+        this.$t('Settings.Theme Settings.Base Theme.Black'),
+        this.$t('Settings.Theme Settings.Base Theme.Moonlight'),
       ]
     },
 
@@ -110,7 +113,8 @@ export default Vue.extend({
         this.$t('Settings.Theme Settings.Main Color Theme.Yellow'),
         this.$t('Settings.Theme Settings.Main Color Theme.Amber'),
         this.$t('Settings.Theme Settings.Main Color Theme.Orange'),
-        this.$t('Settings.Theme Settings.Main Color Theme.Deep Orange')
+        this.$t('Settings.Theme Settings.Main Color Theme.Deep Orange'),
+        this.$t('Settings.Theme Settings.Main Color Theme.Moonlight')
       ]
     }
   },
