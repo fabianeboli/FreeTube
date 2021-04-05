@@ -195,6 +195,7 @@ Settings:
       1440p: '1440p'
       4k: '4k'
       8k: '8k'
+    Playlist Next Video Interval: Lejátszási lista következő videó intervalluma
   Privacy Settings:
     Privacy Settings: 'Adatvédelmi beállítások'
     Remember History: 'Előzmények megjegyzése'
@@ -210,6 +211,7 @@ Settings:
     Remove All Subscriptions / Profiles: 'Összes feliratkozás és profil eltávolítása'
     Are you sure you want to remove all subscriptions and profiles?  This cannot be undone.: 'Biztosan
       törli az összes feliratkozást és profilt? A művelet nem vonható vissza.'
+    Automatically Remove Video Meta Files: Videométafájlok önműködő eltávolítása
   Subscription Settings:
     Subscription Settings: 'Feliratkozás beállításai'
     Hide Videos on Watch: 'Videók elrejtése megtekintés után'
@@ -292,6 +294,7 @@ Settings:
     Hide Video Views: Videó nézetek elrejtése
     Distraction Free Settings: Zavartalan beállítások
     Hide Active Subscriptions: Elérhető feliratkozások elrejtése
+    Hide Playlists: Lejátszási listák elrejtése
   The app needs to restart for changes to take effect. Restart and apply change?: Az
     alkalmazásnak újra kell indulnia, hogy a változtatások életbe lépjenek. Indítsa
     újra és alkalmazza a módosítást?
@@ -302,13 +305,15 @@ Settings:
     Ip: IP-cím
     Your Info: Az Ön adatai
     Clicking on Test Proxy will send a request to: 'A Meghatalmazás-ellenőrzés gombra
-      kattintva kérést küld a következő címre:'
+      kattintva kérést küld a következő címre'
     Test Proxy: Meghatalmazás-ellenőrzés
     Proxy Port Number: Meghatalmazás kikötőszáma
     Proxy Host: Meghatalmazás gazdaszámítógép
     Proxy Protocol: Meghatalmazás protokoll
     Enable Tor / Proxy: Tor/meghatalmazás engedélyezése
     Proxy Settings: Meghatalmazás beállításai
+    Error getting network information. Is your proxy configured properly?: Hiba a
+      hálózati adatok lekérésekor. Megfelelő a meghatalmazás beállítása?
 About:
   #On About page
   About: 'Névjegy'
@@ -341,6 +346,32 @@ About:
 
   Latest FreeTube News: 'Legfrissebb FreeTube hírek'
 
+  these people and projects: ezek emberek és projektek
+  FreeTube is made possible by: 'A FreeTube engedélyezése'
+  Donate: Hozzájárulás
+  Credits: Közreműködők
+  Translate: Fordítás
+  room rules: szobaszabályok
+  Please read the: Kérjük, olvassa el a(z)
+  Chat on Matrix: Matrix csevegése
+  Mastodon: Mastodon
+  Blog: Napló
+  Email: E-mail
+  Website: Honlap
+  Please check for duplicates before posting: Feladás előtt ellenőrizze, hogy vannak-e
+    másolatok
+  GitHub issues: GitHub kérdések
+  Help: Súgó
+  GitHub releases: GitHub kiadások
+  Downloads / Changelog: Letöltések/Változásnapló
+  View License: Licenc megtekintése
+  Licensed under the AGPLv3: Az AGPL (GNU Affero General Public License - GNU Affero
+    általános nyilvános licenc) 3. verziója alatt licencelt
+  FreeTube Wiki: FreeTube Wiki
+  Source code: Forráskód
+  Beta: Béta
+  FAQ: GyIK
+  Report a problem: Probléma jelentése
 Profile:
   Profile Select: 'Profil kiválasztása'
   All Channels: 'Összes csatorna'
@@ -381,6 +412,7 @@ Profile:
   Are you sure you want to delete the selected channels?  This will not delete the channel from any other profile.: 'Biztosan
     törli a kijelölt csatornákat? Ez nem törli a csatornát más profilokból.'
 #On Channel Page
+  Profile Filter: Profilszűrő
 Channel:
   Subscriber: 'Feliratkozó'
   Subscribers: 'Feliratkozók'
@@ -499,6 +531,9 @@ Video:
   Open Channel in Invidious: Csatorna megnyitása az Invidious oldalán
   Started streaming on: Folyamatos átvitel indult
   Streamed on: Folyamatos átvitele
+  Video has been removed from your saved list: A videót eltávolítottuk a mentett listáról
+  Video has been saved: A videó mentve
+  Save Video: Videó mentése
 Videos:
   #& Sort By
   Sort By:
@@ -512,7 +547,7 @@ Playlist:
   Videos: 'Videók'
   View: 'Megtekintés'
   Views: 'Megtekintések'
-  Last Updated On: 'Utoljára frissítve:'
+  Last Updated On: 'Utoljára frissítve'
   Share Playlist:
     Share Playlist: 'Lejátszási lista megosztása'
     Copy YouTube Link: 'YouTube hivatkozás másolása'
@@ -630,3 +665,11 @@ Tooltips:
       visszaadott örökölt formátumokat fogja használni az Invidious által visszaadottak
       helyett. Segít, ha az Invidious által visszaküldött videókat nem lehet lejátszani
       az ország korlátozása miatt
+  Privacy Settings:
+    Remove Video Meta Files: Ha engedélyezve van, a FreeTube önműködőén törli a videolejátszás
+      során létrehozott métafájlokat, amikor a nézési oldal bezárul.
+Playing Next Video Interval: A következő videó lejátszása folyamatban van. Kattintson
+  a törléshez. | A következő videó lejátszása {nextVideoInterval} másodperc múlva
+  történik. Kattintson a törléshez. | A következő videó lejátszása {nextVideoInterval}
+  másodperc múlva történik. Kattintson a törléshez.
+More: Több

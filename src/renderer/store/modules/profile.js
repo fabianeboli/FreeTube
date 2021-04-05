@@ -11,8 +11,8 @@ if (window && window.process && window.process.type === 'renderer') {
     dbLocation = electron.remote.app.getPath('userData')
   } */
 
-  const electron = require('electron')
-  dbLocation = electron.remote.app.getPath('userData')
+  const remote = require('@electron/remote')
+  dbLocation = remote.app.getPath('userData')
 
   dbLocation = dbLocation + '/profiles.db'
 } else {
@@ -103,7 +103,7 @@ const actions = {
       textColor: textColor,
       subscriptions: []
     }
-    console.log(defaultProfile)
+
     profileDb.update({ _id: 'allChannels' }, defaultProfile, { upsert: true }, (err, numReplaced) => {
       if (!err) {
         dispatch('grabAllProfiles')

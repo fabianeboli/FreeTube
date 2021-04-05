@@ -15,7 +15,8 @@ if (window && window.process && window.process.type === 'renderer') {
 
   electron = require('electron')
   webframe = electron.webFrame
-  dbLocation = electron.remote.app.getPath('userData')
+  const remote = require('@electron/remote')
+  dbLocation = remote.app.getPath('userData')
 
   dbLocation = dbLocation + '/settings.db'
 } else {
@@ -46,6 +47,7 @@ const state = {
   enableSearchSuggestions: true,
   rememberHistory: true,
   saveWatchedProgress: true,
+  removeVideoMetaFiles: true,
   autoplayVideos: true,
   autoplayPlaylists: true,
   playNextVideo: false,
@@ -53,6 +55,7 @@ const state = {
   forceLocalBackendForLegacy: false,
   proxyVideos: false,
   defaultTheatreMode: false,
+  defaultInterval: 5,
   defaultVolume: 1,
   defaultPlayback: 1,
   defaultVideoFormat: 'dash',
@@ -73,6 +76,7 @@ const state = {
   hideRecommendedVideos: false,
   hideTrendingVideos: false,
   hidePopularVideos: false,
+  hidePlaylists: false,
   hideLiveChat: false,
   hideActiveSubscriptions: false
 }
@@ -138,6 +142,10 @@ const getters = {
     return state.saveWatchedProgress
   },
 
+  getRemoveVideoMetaFiles: () => {
+    return state.removeVideoMetaFiles
+  },
+
   getAutoplayVideos: () => {
     return state.autoplayVideos
   },
@@ -180,6 +188,10 @@ const getters = {
 
   getDefaultTheatreMode: () => {
     return state.defaultTheatreMode
+  },
+
+  getDefaultInterval: () => {
+    return state.defaultInterval
   },
 
   getDefaultVolume: () => {
@@ -241,9 +253,15 @@ const getters = {
   getHidePopularVideos: () => {
     return state.hidePopularVideos
   },
+
+  getHidePlaylists: () => {
+    return state.hidePlaylists
+  },
+
   getHideLiveChat: () => {
     return state.hideLiveChat
   },
+
   getHideActiveSubscriptions: () => {
     return state.hideActiveSubscriptions
   }
@@ -251,146 +269,160 @@ const getters = {
 
 const actions = {
   grabUserSettings ({ dispatch, commit, rootState }) {
-    settingsDb.find({}, (err, results) => {
-      if (!err) {
-        console.log(results)
-        results.forEach((result) => {
-          switch (result._id) {
-            case 'invidiousInstance':
-              if (result.value === '') {
-                dispatch('updateInvidiousInstance', 'https://invidious.snopyta.org')
-              } else {
-                commit('setInvidiousInstance', result.value)
-              }
-              break
-            case 'backendFallback':
-              commit('setBackendFallback', result.value)
-              break
-            case 'defaultProfile':
-              commit('setDefaultProfile', result.value)
-              break
-            case 'checkForUpdates':
-              commit('setCheckForUpdates', result.value)
-              break
-            case 'checkForBlogPosts':
-              commit('setCheckForBlogPosts', result.value)
-              break
-            case 'enableSearchSuggestions':
-              commit('setEnableSearchSuggestions', result.value)
-              break
-            case 'backendPreference':
-              commit('setBackendPreference', result.value)
-              break
-            case 'landingPage':
-              commit('setLandingPage', result.value)
-              break
-            case 'region':
-              commit('setRegion', result.value)
-              break
-            case 'listType':
-              commit('setListType', result.value)
-              break
-            case 'thumbnailPreference':
-              commit('setThumbnailPreference', result.value)
-              break
-            case 'barColor':
-              commit('setBarColor', result.value)
-              break
-            case 'uiScale':
-              webframe.setZoomFactor(parseInt(result.value) / 100)
-              commit('setUiScale', result.value)
-              break
-            case 'disableSmoothScrolling':
-              commit('setDisableSmoothScrolling', result.value)
-              break
-            case 'hideWatchedSubs':
-              commit('setHideWatchedSubs', result.value)
-              break
-            case 'useRssFeeds':
-              commit('setUseRssFeeds', result.value)
-              break
-            case 'rememberHistory':
-              commit('setRememberHistory', result.value)
-              break
-            case 'saveWatchedProgress':
-              commit('setSaveWatchedProgress', result.value)
-              break
-            case 'autoplayVideos':
-              commit('setAutoplayVideos', result.value)
-              break
-            case 'autoplayPlaylists':
-              commit('setAutoplayPlaylists', result.value)
-              break
-            case 'playNextVideo':
-              commit('setPlayNextVideo', result.value)
-              break
-            case 'enableSubtitles':
-              commit('setEnableSubtitles', result.value)
-              break
-            case 'forceLocalBackendForLegacy':
-              commit('setForceLocalBackendForLegacy', result.value)
-              break
-            case 'proxyVideos':
-              commit('setProxyVideos', result.value)
-              break
-            case 'useProxy':
-              commit('setUseProxy', result.value)
-              break
-            case 'proxyProtocol':
-              commit('setProxyProtocol', result.value)
-              break
-            case 'proxyHostname':
-              commit('setProxyHostname', result.value)
-              break
-            case 'proxyPort':
-              commit('setProxyPort', result.value)
-              break
-            case 'defaultTheatreMode':
-              commit('setDefaultTheatreMode', result.value)
-              break
-            case 'defaultVolume':
-              commit('setDefaultVolume', result.value)
-              sessionStorage.setItem('volume', result.value)
-              break
-            case 'defaultPlayback':
-              commit('setDefaultPlayback', result.value)
-              break
-            case 'defaultVideoFormat':
-              commit('setDefaultVideoFormat', result.value)
-              break
-            case 'defaultQuality':
-              commit('setDefaultQuality', result.value)
-              break
-            case 'hideVideoViews':
-              commit('setHideVideoViews', result.value)
-              break
-            case 'hideVideoLikesAndDislikes':
-              commit('setHideVideoLikesAndDislikes', result.value)
-              break
-            case 'hideChannelSubscriptions':
-              commit('setHideChannelSubscriptions', result.value)
-              break
-            case 'hideCommentLikes':
-              commit('setHideCommentLikes', result.value)
-              break
-            case 'hideRecommendedVideos':
-              commit('setHideRecommendedVideos', result.value)
-              break
-            case 'hideTrendingVideos':
-              commit('setHideTrendingVideos', result.value)
-              break
-            case 'hidePopularVideos':
-              commit('setHidePopularVideos', result.value)
-              break
-            case 'hideLiveChat':
-              commit('setHideLiveChat', result.value)
-              break
-            case 'hideActiveSubscriptions':
-              commit('setHideActiveSubscriptions', result.value)
-              break
-          }
-        })
-      }
+    return new Promise((resolve, reject) => {
+      settingsDb.find({}, (err, results) => {
+        if (!err) {
+          console.log(results)
+          results.forEach((result) => {
+            switch (result._id) {
+              case 'invidiousInstance':
+                if (result.value === '') {
+                  dispatch('updateInvidiousInstance', 'https://invidious.snopyta.org')
+                } else {
+                  commit('setInvidiousInstance', result.value)
+                }
+                break
+              case 'backendFallback':
+                commit('setBackendFallback', result.value)
+                break
+              case 'defaultProfile':
+                console.log('IN SETTING DEFAULT:', result.value)
+                commit('setDefaultProfile', result.value)
+                break
+              case 'checkForUpdates':
+                commit('setCheckForUpdates', result.value)
+                break
+              case 'checkForBlogPosts':
+                commit('setCheckForBlogPosts', result.value)
+                break
+              case 'enableSearchSuggestions':
+                commit('setEnableSearchSuggestions', result.value)
+                break
+              case 'backendPreference':
+                commit('setBackendPreference', result.value)
+                break
+              case 'landingPage':
+                commit('setLandingPage', result.value)
+                break
+              case 'region':
+                commit('setRegion', result.value)
+                break
+              case 'listType':
+                commit('setListType', result.value)
+                break
+              case 'thumbnailPreference':
+                commit('setThumbnailPreference', result.value)
+                break
+              case 'barColor':
+                commit('setBarColor', result.value)
+                break
+              case 'uiScale':
+                webframe.setZoomFactor(parseInt(result.value) / 100)
+                commit('setUiScale', result.value)
+                break
+              case 'disableSmoothScrolling':
+                commit('setDisableSmoothScrolling', result.value)
+                break
+              case 'hideWatchedSubs':
+                commit('setHideWatchedSubs', result.value)
+                break
+              case 'useRssFeeds':
+                commit('setUseRssFeeds', result.value)
+                break
+              case 'rememberHistory':
+                commit('setRememberHistory', result.value)
+                break
+              case 'saveWatchedProgress':
+                commit('setSaveWatchedProgress', result.value)
+                break
+              case 'removeVideoMetaFiles':
+                commit('setRemoveVideoMetaFiles', result.value)
+                break
+              case 'autoplayVideos':
+                commit('setAutoplayVideos', result.value)
+                break
+              case 'autoplayPlaylists':
+                commit('setAutoplayPlaylists', result.value)
+                break
+              case 'playNextVideo':
+                commit('setPlayNextVideo', result.value)
+                break
+              case 'enableSubtitles':
+                commit('setEnableSubtitles', result.value)
+                break
+              case 'forceLocalBackendForLegacy':
+                commit('setForceLocalBackendForLegacy', result.value)
+                break
+              case 'proxyVideos':
+                commit('setProxyVideos', result.value)
+                break
+              case 'useProxy':
+                commit('setUseProxy', result.value)
+                break
+              case 'proxyProtocol':
+                commit('setProxyProtocol', result.value)
+                break
+              case 'proxyHostname':
+                commit('setProxyHostname', result.value)
+                break
+              case 'proxyPort':
+                commit('setProxyPort', result.value)
+                break
+              case 'defaultTheatreMode':
+                commit('setDefaultTheatreMode', result.value)
+                break
+              case 'defaultInterval':
+                commit('setDefaultInterval', result.value)
+                break
+              case 'defaultVolume':
+                commit('setDefaultVolume', result.value)
+                sessionStorage.setItem('volume', result.value)
+                break
+              case 'defaultPlayback':
+                commit('setDefaultPlayback', result.value)
+                break
+              case 'defaultVideoFormat':
+                commit('setDefaultVideoFormat', result.value)
+                break
+              case 'defaultQuality':
+                commit('setDefaultQuality', result.value)
+                break
+              case 'hideVideoViews':
+                commit('setHideVideoViews', result.value)
+                break
+              case 'hideVideoLikesAndDislikes':
+                commit('setHideVideoLikesAndDislikes', result.value)
+                break
+              case 'hideChannelSubscriptions':
+                commit('setHideChannelSubscriptions', result.value)
+                break
+              case 'hideCommentLikes':
+                commit('setHideCommentLikes', result.value)
+                break
+              case 'hideRecommendedVideos':
+                commit('setHideRecommendedVideos', result.value)
+                break
+              case 'hideTrendingVideos':
+                commit('setHideTrendingVideos', result.value)
+                break
+              case 'hidePopularVideos':
+                commit('setHidePopularVideos', result.value)
+                break
+              case 'hidePlaylists':
+                commit('setHidePlaylists', result.value)
+                break
+              case 'hideLiveChat':
+                commit('setHideLiveChat', result.value)
+                break
+              case 'hideActiveSubscriptions':
+                commit('setHideActiveSubscriptions', result.value)
+                break
+            }
+          })
+          resolve()
+        }
+        reject(err)
+      })
     })
   },
 
@@ -531,6 +563,14 @@ const actions = {
     })
   },
 
+  updateRemoveVideoMetaFiles ({ commit }, removeVideoMetaFiles) {
+    settingsDb.update({ _id: 'removeVideoMetaFiles' }, { _id: 'removeVideoMetaFiles', value: removeVideoMetaFiles }, { upsert: true }, (err, numReplaced) => {
+      if (!err) {
+        commit('setRemoveVideoMetaFiles', removeVideoMetaFiles)
+      }
+    })
+  },
+
   updateAutoplayVideos ({ commit }, autoplayVideos) {
     settingsDb.update({ _id: 'autoplayVideos' }, { _id: 'autoplayVideos', value: autoplayVideos }, { upsert: true }, (err, numReplaced) => {
       if (!err) {
@@ -583,6 +623,14 @@ const actions = {
     settingsDb.update({ _id: 'defaultTheatreMode' }, { _id: 'defaultTheatreMode', value: defaultTheatreMode }, { upsert: true }, (err, numReplaced) => {
       if (!err) {
         commit('setDefaultTheatreMode', defaultTheatreMode)
+      }
+    })
+  },
+
+  updateDefaultInterval ({ commit }, defaultInterval) {
+    settingsDb.update({ _id: 'defaultInterval' }, { _id: 'defaultInterval', value: defaultInterval }, { upsert: true }, (err, numReplaced) => {
+      if (!err) {
+        commit('setDefaultInterval', defaultInterval)
       }
     })
   },
@@ -716,6 +764,14 @@ const actions = {
     })
   },
 
+  updateHidePlaylists ({ commit }, hidePlaylists) {
+    settingsDb.update({ _id: 'hidePlaylists' }, { _id: 'hidePlaylists', value: hidePlaylists }, { upsert: true }, (err, numReplaced) => {
+      if (!err) {
+        commit('setHidePlaylists', hidePlaylists)
+      }
+    })
+  },
+
   updateHideActiveSubscriptions ({ commit }, hideActiveSubscriptions) {
     settingsDb.update({ _id: 'hideActiveSubscriptions' }, { _id: 'hideActiveSubscriptions', value: hideActiveSubscriptions }, { upsert: true }, (err, numReplaced) => {
       if (!err) {
@@ -782,6 +838,11 @@ const mutations = {
   setSaveWatchedProgress (state, saveWatchedProgress) {
     state.saveWatchedProgress = saveWatchedProgress
   },
+
+  setRemoveVideoMetaFiles (state, removeVideoMetaFiles) {
+    state.removeVideoMetaFiles = removeVideoMetaFiles
+  },
+
   setAutoplayVideos (state, autoplayVideos) {
     state.autoplayVideos = autoplayVideos
   },
@@ -799,6 +860,9 @@ const mutations = {
   },
   setProxyVideos (state, proxyVideos) {
     state.proxyVideos = proxyVideos
+  },
+  setDefaultInterval (state, defaultInterval) {
+    state.defaultInterval = defaultInterval
   },
   setDefaultVolume (state, defaultVolume) {
     state.defaultVolume = defaultVolume
@@ -871,6 +935,9 @@ const mutations = {
   },
   setHidePopularVideos (state, hidePopularVideos) {
     state.hidePopularVideos = hidePopularVideos
+  },
+  setHidePlaylists (state, hidePlaylists) {
+    state.hidePlaylists = hidePlaylists
   },
   setHideLiveChat (state, hideLiveChat) {
     state.hideLiveChat = hideLiveChat
